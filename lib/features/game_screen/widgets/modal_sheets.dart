@@ -7,22 +7,11 @@ class TopModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.orange.shade300,
-            Colors.orange.shade200,
-          ],
-        ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
-      ),
+    return Image.asset(
+      'lib/assets/images/modal_sheet_top.png',
+      width: double.infinity,
+      height: 157,
+      fit: BoxFit.cover,
     );
   }
 }

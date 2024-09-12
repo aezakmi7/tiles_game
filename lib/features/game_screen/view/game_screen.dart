@@ -19,13 +19,13 @@ class _GameScreenState extends State<GameScreen> {
   late Timer timer;
   int remainingTime = 0;
 
-  final List<Color> tileColors = [
-    Colors.teal,
-    Colors.lightGreen,
-    Colors.blue,
-    Colors.purple,
-    Colors.orange,
-    Colors.red,
+  final List<String> tileImages = [
+    'lib/assets/tiles/teal_tile.png',
+    'lib/assets/tiles/green_tile.png',
+    'lib/assets/tiles/blue_tile.png',
+    'lib/assets/tiles/purple_tile.png',
+    'lib/assets/tiles/orange_tile.png',
+    'lib/assets/tiles/red_tile.png',
   ];
 
   @override
@@ -53,17 +53,18 @@ class _GameScreenState extends State<GameScreen> {
         timerDuration = 90;
     }
     remainingTime = timerDuration;
-    grid = List.generate(gridSize, (_) => List.filled(gridSize, 1));
+    grid = List.generate(gridSize,
+        (i) => List.generate(gridSize, (j) => (i == 0 && j == 0) ? 0 : 1));
     _addNonClickableTiles();
     startTimer();
   }
 
   void _addNonClickableTiles() {
-    grid[0][0] = 0; // Make top-left corner non-clickable
-    for (int i = 1; i < gridSize; i++) {
-      grid[i][0] = 0; // First column, excluding the top-left corner
-      grid[0][i] = 0; // First row, excluding the top-left corner
+    for (int i = 0; i < gridSize; i++) {
+      grid[i][0] = 0; // First column
+      grid[0][i] = 0; // First row
     }
+    grid[0][0] = -1;
   }
 
   void startTimer() {
@@ -97,22 +98,26 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          const TopModalSheet(),
-          Expanded(
-            child: GameGrid(
-              grid: grid,
-              gridSize: gridSize,
-              onTileTap: incrementTile,
-              tileColors: tileColors,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const TopModalSheet(),
+            Expanded(
+              child: Center(
+                child: GameGrid(
+                  grid: grid,
+                  gridSize: gridSize,
+                  onTileTap: incrementTile,
+                  tileImages: tileImages,
+                ),
+              ),
             ),
-          ),
-          GameControls(
-            remainingTime: remainingTime,
-            onRestart: restartGame,
-          ),
-        ],
+            GameControls(
+              remainingTime: remainingTime,
+              onRestart: restartGame,
+            ),
+          ],
+        ),
       ),
     );
   }

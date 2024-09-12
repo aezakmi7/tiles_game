@@ -15,41 +15,32 @@ class GameControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 35),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.orange.shade200,
-            Colors.orange.shade300,
-          ],
-        ),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
+        image: DecorationImage(
+          image: AssetImage('lib/assets/images/modal_sheet_bottom.png'),
+          fit: BoxFit.cover,
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          TimerDisplay(remainingTime: remainingTime),
-          ElevatedButton.icon(
-            onPressed: onRestart,
-            icon: const Icon(Icons.refresh, color: Colors.white),
-            label: const Text('Restart',
-                style: TextStyle(color: Colors.white, fontSize: 18)),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.green,
-              surfaceTintColor: Colors.white,
-              shadowColor: Colors.black,
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TimerDisplay(remainingTime: remainingTime),
+              GestureDetector(
+                onTap: onRestart,
+                child: Image.asset(
+                  'lib/assets/buttons/button_restart.png',
+                  width: 179,
+                  height: 44,
+                ),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 14),
-            ),
+            ],
+          ),
+          SizedBox(
+            height: 50,
           ),
         ],
       ),

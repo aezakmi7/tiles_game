@@ -4,78 +4,57 @@ class GameGrid extends StatelessWidget {
   final List<List<int>> grid;
   final int gridSize;
   final Function(int, int) onTileTap;
-  final List<Color> tileColors;
+  final List<String> tileImages;
 
   const GameGrid({
     super.key,
     required this.grid,
     required this.gridSize,
     required this.onTileTap,
-    required this.tileColors,
+    required this.tileImages,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: gridSize,
-        childAspectRatio: 1,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
-      itemCount: gridSize * gridSize,
-      itemBuilder: (context, index) {
-        int row = index ~/ gridSize;
-        int col = index % gridSize;
-        return GestureDetector(
-          onTap: () => onTileTap(row, col),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  grid[row][col] == 0
-                      ? tileColors[0].withOpacity(0.7)
-                      : tileColors[grid[row][col]].withOpacity(0.7),
-                  grid[row][col] == 0
-                      ? tileColors[0]
-                      : tileColors[grid[row][col]],
-                ],
-              ),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Center(
-              child: grid[row][col] == 0
-                  ? null
-                  : Text(
-                      grid[row][col].toString(),
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 2.0,
-                            color: Colors.black.withOpacity(0.3),
-                            offset: const Offset(1, 1),
-                          ),
-                        ],
-                      ),
-                    ),
-            ),
+    double gridWidth = (42.0 * gridSize) + (15.0 * (gridSize - 1));
+    double gridHeight = (44.0 * gridSize) + (15.0 * (gridSize - 1));
+
+    return Center(
+      child: SizedBox(
+        width: gridWidth,
+        height: gridHeight,
+        child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: gridSize,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 15,
+            childAspectRatio: 42 / 44,
           ),
-        );
-      },
+          itemCount: gridSize * gridSize,
+          itemBuilder: (context, index) {
+            int row = index ~/ gridSize;
+            int col = index % gridSize;
+            if (grid[row][col] == -1) {
+              return const SizedBox(); // Return an empty widget for the top-left corner
+            }
+            return GestureDetector(
+              onTap: () => onTileTap(row, col),
+              child: Container(
+                width: 42,
+                height: 44,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(tileImages[grid[row][col]]),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
